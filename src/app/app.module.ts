@@ -22,6 +22,8 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { CardComponent } from './components/card/card.component';
 import { MarkdownEditorComponent } from './components/markdown-editor/markdown-editor.component';
 
+import { httpInterceptorProvider } from './http-interceptor';
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -47,7 +49,7 @@ import { MarkdownEditorComponent } from './components/markdown-editor/markdown-e
 		BrowserAnimationsModule,
 		TabsModule.forRoot()
 	],
-	providers: [],
+	providers: [ httpInterceptorProvider ],
 	bootstrap: [ AppComponent ]
 })
 export class AppModule {
