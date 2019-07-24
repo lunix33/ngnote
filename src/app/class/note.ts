@@ -3,15 +3,43 @@ import { HttpClient } from '@angular/common/http';
 import { InjectorInstance, ApiUrl } from './common'
 import { HTTPStatus, HttpStatusCode } from './httpstatus';
 
+// **** Search Criterions *****************************************************
+/**
+ * Interface storing the search criterions.
+ */
+export interface NoteSearchCriterions {
+	Username?: string;
+	Public?: PublicCriterion;
+	Trash?: TrashCriterion;
+	Text?: string;
+}
+
+/**
+ * Possible values for the Trash search criterion.
+ */
+export enum TrashCriterion {
+	ONLY = "only",
+	INCLUDE = "include"
+}
+
+/**
+ * Possible values for the Public search criterion.
+ */
+export enum PublicCriterion {
+	ONLY = "only",
+	EXCLUDE = "exclude"
+}
+
 export class Note {
 	// **** Static ************************************************************
 	/**
-	 * Fetch all the notes of the author from the API.
+	 * Get all the notes respectig certain search criterions.
+	 * @param crits The search criterions
 	 */
-	static async GetAll(author: string): Promise<Note[]> {
+	static async Search(crits: NoteSearchCriterions): Promise<Note[]> {
 		const http = InjectorInstance.get<HttpClient>(HttpClient);
-		const data: HTTPStatus = ((await http.get(`${ApiUrl}/notes/${author}`).toPromise()) as HTTPStatus)
-		
+		const data: HTTPStatus = ((await http.post(`${ApiUrl}/note/search`, crits).toPromise()) as HTTPStatus)
+
 		if (data.Status === HttpStatusCode.Ok) {
 			const rtn: Note[] = data.Message.map((x: any) => new Note(x))
 			return rtn;

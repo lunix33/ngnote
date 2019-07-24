@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Note } from '../../class/note';
+import { Note, PublicCriterion } from '../../class/note';
 import { HttpStatusCode } from 'src/app/class/httpstatus';
 
 @Component({
@@ -12,6 +12,9 @@ export class HomeComponent {
 	public notes: Note[] = [];
 
 	constructor() {
+		Note.Search({ Public: PublicCriterion.ONLY })
+			.then(x => this.notes = x)
+			.catch(err => console.log(err))
 	}
 
 	/**
