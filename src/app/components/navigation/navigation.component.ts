@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, HostListener } from '@angular/core';
 
-import { Note } from '../../class/note'
+import { Note, NoteSearchCriterions } from '../../models/note'
+import { LoginUserService } from 'src/app/class/login-user.service';
 
 @Component({
 	selector: 'app-navigation',
@@ -13,9 +14,13 @@ export class NavigationComponent {
 	public collapsed: boolean = false;
 	private breakpoint: number = 768;
 
-	constructor() {
+	constructor(usrSrv: LoginUserService) {
 		this.onWindowResize(null);
 
+		const opts: NoteSearchCriterions = {
+			Username: (usrSrv.)
+		}
+		Note.Search({Username: ""})
 		Note.GetAll(localStorage.getItem('author'))
 			.then((notes: Note[]) => { this.notes = notes })
 			.catch(err => console.error(err));

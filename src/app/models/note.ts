@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 
-import { InjectorInstance, ApiUrl } from './common'
-import { HTTPStatus, HttpStatusCode } from './httpstatus';
+import { InjectorInstance, ApiUrl } from '../class/common'
+import { HTTPStatus, HttpStatusCode } from '../class/httpstatus';
+import { Injectable } from '@angular/core';
 
 // **** Search Criterions *****************************************************
 /**
@@ -38,7 +39,7 @@ export class Note {
 	 */
 	static async Search(crits: NoteSearchCriterions): Promise<Note[]> {
 		const http = InjectorInstance.get<HttpClient>(HttpClient);
-		const data: HTTPStatus = ((await http.post(`${ApiUrl}/note/search`, crits).toPromise()) as HTTPStatus)
+		const data: HTTPStatus = await (http.post(`${ApiUrl}/note/search`, crits).toPromise()) as HTTPStatus
 
 		if (data.Status === HttpStatusCode.Ok) {
 			const rtn: Note[] = data.Message.map((x: any) => new Note(x))
@@ -53,7 +54,7 @@ export class Note {
 	 */
 	static async Get(id: string): Promise<Note> {
 		const http = InjectorInstance.get<HttpClient>(HttpClient);
-		const data: HTTPStatus = ((await http.get(`${ApiUrl}/note/${id}`).toPromise()) as HTTPStatus)
+		const data: HTTPStatus = await (http.get(`${ApiUrl}/note/${id}`).toPromise()) as HTTPStatus
 
 		if (data.Status === HttpStatusCode.Ok) {
 			return new Note(data.Message);
@@ -94,7 +95,7 @@ export class Note {
 			Title: this.Title,
 			Content: this.Content
 		}
-		const data: HTTPStatus = ((await http.put(`${ApiUrl}/note/`, payload).toPromise()) as HTTPStatus)
+		const data: HTTPStatus = await (http.put(`${ApiUrl}/note/`, payload).toPromise()) as HTTPStatus
 
 		if (data.Status === HttpStatusCode.Ok) {
 			// Update the current object if successful.
@@ -121,7 +122,7 @@ export class Note {
 			Title: this.Title,
 			Content: this.Content
 		}
-		const data = ((await http.patch(`${ApiUrl}/note/${this.ID}`, payload).toPromise()) as HTTPStatus)
+		const data = await (http.patch(`${ApiUrl}/note/${this.ID}`, payload).toPromise()) as HTTPStatus
 
 		if (data.Status === HttpStatusCode.Ok) {
 			const uNote: Note = data.Message;
@@ -140,7 +141,7 @@ export class Note {
 			throw new Error('Unable to delete a non-existing note.');
 
 		const http = InjectorInstance.get<HttpClient>(HttpClient);
-		const data: HTTPStatus = ((await http.delete(`${ApiUrl}/note/${this.ID}`).toPromise()) as HTTPStatus)
+		const data: HTTPStatus = await (http.delete(`${ApiUrl}/note/${this.ID}`).toPromise()) as HTTPStatus
 
 		if (data.Status === HttpStatusCode.Ok) {
 			this.ID = undefined;

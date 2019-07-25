@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Note } from 'src/app/class/note';
+import { Note } from 'src/app/models/note';
 
 @Component({
 	selector: 'app-note-edit',

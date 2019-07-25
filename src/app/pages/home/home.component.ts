@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Note, PublicCriterion } from '../../class/note';
+import { Note, PublicCriterion } from '../../models/note';
 import { HttpStatusCode } from 'src/app/class/httpstatus';
 
 @Component({

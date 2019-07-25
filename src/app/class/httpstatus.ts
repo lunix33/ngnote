@@ -1,4 +1,4 @@
-export class HTTPStatus {
+export interface HTTPStatus {
     Status: HttpStatusCode;
     Message: any;
     Error: any;
