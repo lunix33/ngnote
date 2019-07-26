@@ -1,18 +1,4 @@
 <section>
-    <app-card header="Author">
-        <div class="form-group">
-            <input class="form-control"
-                   [value]="author"
-                   [formControl]="authorControl"
-                   type="text"
-                   placeholder="Note author name" />
-            
-            <small class="text-muted">
-                The name in that field will be used as the author name for all the newly created notes.
-            </small>
-        </div>
-    </app-card>
-
     <app-card nopad
               header="Notes">
         <table class="table table-hover">
@@ -37,14 +23,14 @@
                 <tr *ngFor="let n of notes">
                     <td>{{n.Author}}</td>
                     <td>
-                        <a [routerLink]="['/note', n.ID]">
-                            {{n.Title}}
+                        <a [routerLink]="['/note', n.Note.ID]">
+                            {{n.Note.Title}}
                         </a>
                     </td>
-                    <td>{{n.Added}}</td>
-                    <td>{{n.Updated}}</td>
+                    <td>{{n.Note.Added | date:'yyyy/MM/dd HH:mm'}}</td>
+                    <td>{{n.LastUpdate | date:'yyyy/MM/dd HH:mm'}}</td>
                     <td class='tools'>
-                        <a [routerLink]="['/note', n.ID, 'edit']">
+                        <a [routerLink]="['/note', n.Note.ID, 'edit']">
                             <i class="fas fa-edit" tooltip="Edit"></i>
                         </a>
                         <a href="#" (click)="onDeleteBtnClick($event, n)">

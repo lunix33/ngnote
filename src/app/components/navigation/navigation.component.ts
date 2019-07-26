@@ -1,7 +1,8 @@
 import { Component, Output, EventEmitter, HostListener } from '@angular/core';
 
-import { Note, NoteSearchCriterions } from '../../models/note'
-import { LoginUserService } from 'src/app/class/login-user.service';
+import { Note, NoteSearchCriterions, PublicCriterion, OrderCriterion, NoteSearchResponse } from '../../models/note'
+import { LoginUserService } from 'src/app/services/login-user.service';
+import { User } from 'src/app/models/user';
 
 @Component({
 	selector: 'app-navigation',
@@ -10,20 +11,23 @@ import { LoginUserService } from 'src/app/class/login-user.service';
 })
 export class NavigationComponent {
 
-	public notes: Note[] = [];
+	public notes: NoteSearchResponse[] = [];
 	public collapsed: boolean = false;
 	private breakpoint: number = 768;
 
-	constructor(usrSrv: LoginUserService) {
+	constructor(liUsrSrv: LoginUserService) {
 		this.onWindowResize(null);
 
+		let user: User = liUsrSrv.get
 		const opts: NoteSearchCriterions = {
-			Username: (usrSrv.)
+			Username: (user) ? user.Username : null,
+			Public: (!user) ? PublicCriterion.ONLY : null,
+			Limit: 30,
+			Order: OrderCriterion.UPDATED
 		}
-		Note.Search({Username: ""})
-		Note.GetAll(localStorage.getItem('author'))
-			.then((notes: Note[]) => { this.notes = notes })
-			.catch(err => console.error(err));
+		Note.Search(opts)
+			.then((notes: NoteSearchResponse[]) => { this.notes = notes })
+			.catch(err => console.error(err))
 	}
 
 	/**

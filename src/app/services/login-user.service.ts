@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
-import { ApiUrl, HTTPErrorHandler } from './common';
-import { HTTPStatus } from './httpstatus';
+import { ApiUrl, HTTPErrorHandler } from '../classes/common';
+import { HTTPStatus } from '../classes/httpstatus';
 
 export interface LoginPostData {
 	Username: string,
@@ -22,7 +22,7 @@ export class LoginUserService {
 	}
 
 	/** Get the logged in user's details. */
-	public get(): User { return this.usr }
+	public get get(): User { return this.usr }
 	/** Get the user's authentication token. */
 	public get authenticationToken(): string { return localStorage.getItem('tok'); }
 
@@ -40,7 +40,7 @@ export class LoginUserService {
 
 	async logout() {
 		try {
-		const rst = await (this.http.get(`${ApiUrl}/logout`).toPromise()) as HTTPStatus
+			const rst = await (this.http.get(`${ApiUrl}/logout`).toPromise()) as HTTPStatus
 		} catch (err) {
 			HTTPErrorHandler(err);
 		}

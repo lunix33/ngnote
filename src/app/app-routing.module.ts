@@ -5,6 +5,7 @@ import { HomeComponent } from './pages/home/home.component'
 import { NotFoundComponent } from './pages/not-found/not-found.component'
 import { NoteViewComponent } from './pages/note-view/note-view.component';
 import { NoteEditComponent } from './pages/note-edit/note-edit.component';
+import { SwwComponent } from './pages/sww/sww.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'note/:id', component: NoteViewComponent },
   { path: 'note/:id/edit', component: NoteEditComponent },
 
+  { path: 'sww', component: SwwComponent },
   { path: '**', component: NotFoundComponent }
 ];
 

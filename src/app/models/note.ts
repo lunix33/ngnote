@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 
-import { InjectorInstance, ApiUrl } from '../class/common'
-import { HTTPStatus, HttpStatusCode } from '../class/httpstatus';
+import { InjectorInstance, ApiUrl } from '../classes/common'
+import { HTTPStatus, HttpStatusCode } from '../classes/httpstatus';
 import { Injectable } from '@angular/core';
 
 // **** Search Criterions *****************************************************
@@ -13,22 +13,35 @@ export interface NoteSearchCriterions {
 	Public?: PublicCriterion;
 	Trash?: TrashCriterion;
 	Text?: string;
+	Order?: OrderCriterion;
+	Limit?: number;
+	Offset?: number;
 }
 
 /**
  * Possible values for the Trash search criterion.
  */
 export enum TrashCriterion {
-	ONLY = "only",
-	INCLUDE = "include"
+	ONLY = 'only',
+	INCLUDE = 'include'
 }
 
 /**
  * Possible values for the Public search criterion.
  */
 export enum PublicCriterion {
-	ONLY = "only",
-	EXCLUDE = "exclude"
+	ONLY = 'only',
+	EXCLUDE = 'exclude'
+}
+
+/**
+ * Possible values for the Order search criterion.
+ */
+export enum OrderCriterion {
+	UPDATED = 'updated',
+	ADDED = 'added',
+	VERSION = 'version',
+	USER = 'user'
 }
 
 export class Note {
@@ -37,12 +50,12 @@ export class Note {
 	 * Get all the notes respectig certain search criterions.
 	 * @param crits The search criterions
 	 */
-	static async Search(crits: NoteSearchCriterions): Promise<Note[]> {
+	static async Search(crits: NoteSearchCriterions): Promise<NoteSearchResponse[]> {
 		const http = InjectorInstance.get<HttpClient>(HttpClient);
 		const data: HTTPStatus = await (http.post(`${ApiUrl}/note/search`, crits).toPromise()) as HTTPStatus
 
 		if (data.Status === HttpStatusCode.Ok) {
-			const rtn: Note[] = data.Message.map((x: any) => new Note(x))
+			const rtn: NoteSearchResponse[] = data.Message.map((x: any) => new NoteSearchResponse(x))
 			return rtn;
 		} else
 			throw data;
@@ -67,7 +80,7 @@ export class Note {
 	public Author: string;
 	public Title: string;
 	public Content: string;
-	public Added: string;
+	public Added: Date;
 	public Updated: string;
 
 	/**
@@ -79,7 +92,7 @@ export class Note {
 		this.Author = o.Author;
 		this.Title = o.Title;
 		this.Content = o.Content;
-		this.Added = o.Added;
+		this.Added = new Date(o.Added);
 		this.Updated = o.Updated;
 	}
 
@@ -149,5 +162,18 @@ export class Note {
 		}
 
 		throw data;
+	}
+}
+
+// **** NoteSearchResponse ****************************************************
+export class NoteSearchResponse{
+	public Note: Note;
+	public Author: string;
+	public LastUpdate: Date;
+
+	constructor(o: any) {
+		this.Note = new Note(o.Note);
+		this.Author = o.Author;
+		this.LastUpdate = new Date(o.LastUpdate)
 	}
 }

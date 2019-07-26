@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { UtilService, AppInfoRsp } from './services/util.service';
+import { HTTPErrorType } from './classes/auth-http-interceptor';
 
 @Component({
 	selector: 'app-root',
@@ -6,7 +8,16 @@ import { Component } from '@angular/core';
 	styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+	public title: string = "ngNote"
 
-	constructor() {
+	constructor(utilSrv: UtilService) {
+		utilSrv.AppInfo()
+			.then((i: AppInfoRsp) => {
+				this.title = (i.Title) ? i.Title : this.title
+			})
+			.catch(err => {
+				if (err.type == HTTPErrorType.NON_OK)
+					console.error('unable to get application information', err.error)
+			})
 	}
 }

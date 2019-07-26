@@ -1,0 +1,14 @@
+<app-card header="Oups!">
+    <p>An error occured while trying to display the page.</p>
+    <p>
+        You can navigate back to the <a routerLink="/home">main menu</a>.<br />
+        Or try again later.
+    </p>
+
+    <div *ngIf="debug">
+        <h2>Debug info:</h2>
+        <p *ngIf="error.message">{{error.message}}</p>
+        <p class="stack" *ngIf="error.stack">{{error.stack}}</p>
+    </div>
+    
+</app-card>

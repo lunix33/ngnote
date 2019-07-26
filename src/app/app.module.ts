@@ -8,7 +8,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 
-import { InitInjector } from './class/common'
+import { InitInjector } from './classes/common'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +23,7 @@ import { CardComponent } from './components/card/card.component';
 import { MarkdownEditorComponent } from './components/markdown-editor/markdown-editor.component';
 
 import { httpInterceptorProvider } from './http-interceptor';
+import { SwwComponent } from './pages/sww/sww.component';
 
 @NgModule({
 	declarations: [
@@ -32,6 +33,7 @@ import { httpInterceptorProvider } from './http-interceptor';
 		NoteViewComponent,
 		NoteEditComponent,
 		NotFoundComponent,
+		SwwComponent,
 
 		NavigationComponent,
 		CardComponent,
