@@ -1,27 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { HTTPError } from 'src/app/classes/auth-http-interceptor';
-import { ActivatedRoute } from '@angular/router';
-import { DataService } from 'src/app/services/data.service';
+import { Component } from '@angular/core';
+import { DisplayError, ErrorDisplayService } from 'src/app/services/error-display.service';
 
 @Component({
 	selector: 'app-sww',
 	templateUrl: './sww.component.html',
 	styleUrls: ['./sww.component.scss']
 })
-export class SwwComponent implements OnInit {
+export class SwwComponent {
+	public error: DisplayError;
+	public debug: boolean = localStorage.getItem("debug") === "true";
+	public report: string;
 
-	@Input()
-	public error: Error|HTTPError = new Error('not really an error...')
-	public debug: boolean = localStorage.getItem("debug") === "true"
-
-	constructor(dataSrv: DataService) {
-		if (history.state.dataid) {
-			const err = dataSrv.get(history.state.dataid);
-			this.error = err;
-		}
+	constructor(errDispSrv: ErrorDisplayService) {
+		this.error = history.state.err || errDispSrv.MakeDisplayError({});
+		this.report = errDispSrv.Report(this.error)
 	}
-
-	ngOnInit() {
-	}
-
 }

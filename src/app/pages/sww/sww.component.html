@@ -1,7 +1,10 @@
-<app-card header="Oups!">
-    <p>An error occured while trying to display the page.</p>
+<app-card header="Something when wrong... 😵">
+    <p>{{error.when}}</p>
+    <p>{{error.friendly}}</p>
     <p>
-        You can navigate back to the <a routerLink="/home">main menu</a>.<br />
+        Here is some things you could try:<br />
+        Try to navigate to the <a routerLink="/home">main menu</a>.<br />
+        If this happened multiple times, try <a [href]="report" target="_blank">reporting the issue</a>.<br />
         Or try again later.
     </p>
 

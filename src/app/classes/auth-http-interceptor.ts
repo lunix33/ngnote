@@ -6,17 +6,18 @@ import { catchError } from 'rxjs/operators';
 import { HTTPStatus, HttpStatusCode } from './httpstatus';
 import { Router } from '@angular/router';
 import { DataService } from '../services/data.service';
+import { ErrorDisplayService } from '../services/error-display.service';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
 	private liUsrSrv: LoginUserService;
 	private router: Router;
-	private dataSrv: DataService;
+	private errDispSrv: ErrorDisplayService;
 
-	constructor(liUsrSrv: LoginUserService, dataSrv: DataService, router: Router) {
+	constructor(liUsrSrv: LoginUserService, errDispSrv: ErrorDisplayService, router: Router) {
 		this.liUsrSrv = liUsrSrv;
 		this.router = router
-		this.dataSrv = dataSrv
+		this.errDispSrv = errDispSrv;
 	}
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -52,8 +53,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
 	}
 
 	navigateSww(err: HTTPStatus|Error) {
-		const dataid = this.dataSrv.set(err);
-		this.router.navigate(['/sww'], { state: { dataid: dataid }})
+		this.errDispSrv.SomethingWentWrong(err)
 		return throwError(err);
 	}
 }
