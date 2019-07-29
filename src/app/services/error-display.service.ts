@@ -19,10 +19,11 @@ export class ErrorDisplayService {
 	 * @param friendly An optional friendly message to be displayed.
 	 */
 	public MakeDisplayError(error: any, friendly?: string): DisplayError {
+		if (error == null) error = {};
 		return {
 			friendly: friendly || error.friendly || 'An error occured while trying to display the page.',
-			message: error.message || "No message available.",
-			stack: error.stack || "No stack available.",
+			message: error.message || 'No message available.',
+			stack: error.stack || 'No stack available.',
 			where: error.where || location.href,
 			when: error.when || new Date()
 		};

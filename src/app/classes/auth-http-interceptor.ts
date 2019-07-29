@@ -3,9 +3,8 @@ import { Observable, throwError } from 'rxjs'
 import { Injectable } from '@angular/core';
 import { LoginUserService } from '../services/login-user.service';
 import { catchError } from 'rxjs/operators';
-import { HTTPStatus, HttpStatusCode } from './httpstatus';
+import { HTTPStatus } from './httpstatus';
 import { Router } from '@angular/router';
-import { DataService } from '../services/data.service';
 import { ErrorDisplayService } from '../services/error-display.service';
 
 @Injectable()

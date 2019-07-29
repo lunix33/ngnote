@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
-import { ApiUrl, HTTPErrorHandler } from '../classes/common';
+import { ApiUrl } from '../classes/common';
 import { HTTPStatus } from '../classes/httpstatus';
+import { ErrorDisplayService } from './error-display.service';
 
 export interface LoginPostData {
 	Username: string,
@@ -14,11 +15,13 @@ export interface LoginPostData {
 })
 export class LoginUserService {
 	public http: HttpClient;
+	public errDispSrv: ErrorDisplayService;
 
 	private usr: User;
 
-	constructor(http: HttpClient) {
+	constructor(http: HttpClient, errDispSrv: ErrorDisplayService) {
 		this.http = http;
+		this.errDispSrv = errDispSrv
 	}
 
 	/** Get the logged in user's details. */
@@ -42,7 +45,8 @@ export class LoginUserService {
 		try {
 			const rst = await (this.http.get(`${ApiUrl}/logout`).toPromise()) as HTTPStatus
 		} catch (err) {
-			HTTPErrorHandler(err);
+			// this.errDispSrv.SomethingWentWrong(err);
+			// TODO: Ignore the error in the moment, I'll check how to handle that later...
 		}
 
 		// Remove the authentication token.

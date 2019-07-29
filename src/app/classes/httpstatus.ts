@@ -4,6 +4,12 @@ export interface HTTPStatus {
     Error: any;
 }
 
+export interface HTTPStatusResponseError {
+    message?: string;
+    stack?: string;
+    friendly: string;
+}
+
 export enum HttpStatusCode {
     Ok = 'ok',
     NotFound = 'not_found',

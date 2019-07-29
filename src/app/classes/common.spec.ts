@@ -1,7 +1,15 @@
-import { Common } from './common';
+import { InitInjector, InjectorInstance } from './common';
+import { TestBed } from '@angular/core/testing';
+import { Injector } from '@angular/core';
 
 describe('Common', () => {
-  it('should create an instance', () => {
-    expect(new Common()).toBeTruthy();
+  beforeEach(() => {
+    TestBed.configureTestingModule
+  })
+
+  it('can set Injector', () => {
+    const inj = TestBed.get(Injector);
+    InitInjector(inj)
+    expect(InjectorInstance).toBe(inj);
   });
 });

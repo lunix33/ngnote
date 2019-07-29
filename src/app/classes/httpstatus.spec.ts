@@ -1,7 +1,8 @@
 import { HTTPStatus } from './httpstatus';
 
 describe('HTTPStatus', () => {
-  it('should create an instance', () => {
-    expect(new HTTPStatus()).toBeTruthy();
-  });
+  /*
+    This class is just a global interface to hold HTTP response.
+    Therefore there's nothing really to test.
+   */
 });
