@@ -1,9 +1,10 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ErrorDisplayService, DisplayError } from './error-display.service';
 import { SwwComponent } from '../pages/sww/sww.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CardComponent } from '../components/card/card.component';
 import { HTTPStatusResponseError } from '../classes/httpstatus';
+import { Location } from '@angular/common';
 
 const routes = [
 	{ path: 'sww', component: SwwComponent }
@@ -72,4 +73,30 @@ describe('ErrorDisplayService', () => {
 		expect(disp.when instanceof Date).toBeTruthy();
 		expect(disp.when).toBe(derr.when);
 	});
+
+	it('generate github report', () => {
+		const err = errDispSrv.MakeDisplayError(null);
+		const expectedTitle = encodeURIComponent(`SWW: No message available.`)
+		const expectedBody = encodeURIComponent(
+			`Describe what happened here...
+
+--- --- ---
+When: ${err.when.toISOString()}
+Where: ${location.href}
+What: No message available.
+How:
+No stack available.`)
+
+		expect(errDispSrv.Report(err)).toBe(`https://github.com/lunix33/gonote/issues/new?title=${expectedTitle}&body=${expectedBody}`)
+	});
+
+	it('navigate to the SWW page', fakeAsync(() => {
+		const location = TestBed.get(Location);
+
+		expect(location.path()).toBe('');
+
+		errDispSrv.SomethingWentWrong(new Error('some error'));
+		tick();
+		expect(location.path()).toBe('/sww');
+	}));
 });

@@ -33,10 +33,10 @@ export class ErrorDisplayService {
 	 * Redirect the user to the Something Went Wrong page with the specified error.
 	 * @param err The error occurred.
 	 */
-	public SomethingWentWrong(err: any) {
+	public async SomethingWentWrong(err: any): Promise<boolean> {
 		const derr = this.MakeDisplayError(err);
 
-		this.router.navigate(['/sww'], {
+		return this.router.navigate(['/sww'], {
 			state: {
 				err: derr
 			}
