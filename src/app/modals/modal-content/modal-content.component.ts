@@ -1,6 +1,7 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal/public_api';
+import { Component, OnInit } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ModalConfig } from 'src/app/services/modal.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-modal-content',
@@ -8,13 +9,16 @@ import { ModalConfig } from 'src/app/services/modal.service';
 	styleUrls: ['./modal-content.component.scss']
 })
 export class ModalContentComponent implements OnInit {
+	private sanitizer: DomSanitizer;
 
 	public config: ModalConfig;
+	public body: any;
 	public ref: BsModalRef;
 	public klass: any;
 
-	constructor(ref: BsModalRef) {
+	constructor(ref: BsModalRef, sanitizer: DomSanitizer) {
 		this.ref = ref;
+		this.sanitizer = sanitizer;
 	}
 
 	ngOnInit() {
@@ -37,10 +41,7 @@ export class ModalContentComponent implements OnInit {
 				x.klass["btn-sm btn-primary"] = true
 		});
 
-		// Global default.
-		this.klass = { "modal-dialog": true };
-		if (this.config.global.size)
-			this.klass[`modal-${this.config.global.size}`] = true;
+		this.body = this.sanitizer.bypassSecurityTrustHtml(this.config.body);
 	}
 
 }

@@ -1,10 +1,10 @@
-import { AuthHttpInterceptor } from './auth-http-interceptor';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
 import { TestBed } from '@angular/core/testing';
-import { httpInterceptorProvider } from '../http-interceptor';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SwwComponent } from '../pages/sww/sww.component';
 import { CardComponent } from '../components/card/card.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppHttpInterceptor } from './app-http-interceptor';
 
 const routes = [
 	{ path: 'sww', component: SwwComponent }
@@ -18,7 +18,9 @@ describe('AuthHttpInterceptor', () => {
 		TestBed.configureTestingModule({
 			declarations: [ SwwComponent, CardComponent ],
 			imports: [ RouterTestingModule.withRoutes(routes), HttpClientTestingModule ],
-			providers: [ httpInterceptorProvider ]
+			providers: [
+				{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
+			]
 		});
 	});
 

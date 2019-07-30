@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BsModalService, ModalOptions } from 'ngx-bootstrap/modal/public_api';
-import { ModalContentComponent } from '../components/modal-content/modal-content.component';
+import { BsModalService, ModalOptions, BsModalRef } from 'ngx-bootstrap/modal';
+import { ModalContentComponent } from '../modals/modal-content/modal-content.component';
 
 @Injectable({
 	providedIn: 'root'
@@ -17,7 +17,7 @@ export class ModalService {
 	 * Show a new modal.
 	 * @param config The configuration to be applied to the modal.
 	 */
-	public show(config: ModalConfig): void {
+	public async show(config: ModalConfig): Promise<void> {
 		// Set global settings
 		if (!config.global)
 			config.global = {};
@@ -28,7 +28,7 @@ export class ModalService {
 				config.global.escape : true,
 			ignoreBackdropClick: (config.global.backClick != null) ?
 				config.global.backClick : false,
-			initialState: config
+			initialState: { config }
 		}
 
 		this.bsModalSrv.show(ModalContentComponent, modalCfg);
@@ -36,10 +36,10 @@ export class ModalService {
 }
 
 export interface ModalConfig {
-	header: ModalHeaderConfig
+	header?: ModalHeaderConfig
 	body: string
-	footer: ModalFooterControlConfig[]
-	global: ModalGlobalConfig
+	footer?: ModalFooterControlConfig[]
+	global?: ModalGlobalConfig
 }
 
 export interface ModalHeaderConfig {
@@ -49,7 +49,7 @@ export interface ModalHeaderConfig {
 
 export interface ModalFooterControlConfig {
 	text: string
-	fn: Function
+	fn: (BsModalRef)=>void
 	class?: string
 	klass?: any
 }
@@ -57,5 +57,4 @@ export interface ModalFooterControlConfig {
 export interface ModalGlobalConfig {
 	escape?: boolean
 	backClick?: boolean
-	size?: string
 }

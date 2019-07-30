@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { ErrorDisplayService } from '../services/error-display.service';
 
 @Injectable()
-export class AuthHttpInterceptor implements HttpInterceptor {
+export class AppHttpInterceptor implements HttpInterceptor {
 	private liUsrSrv: LoginUserService;
 	private router: Router;
 	private errDispSrv: ErrorDisplayService;

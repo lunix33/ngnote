@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Injector } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 import { MarkdownModule } from 'ngx-markdown'
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -23,9 +23,10 @@ import { SwwComponent } from './pages/sww/sww.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { CardComponent } from './components/card/card.component';
 import { MarkdownEditorComponent } from './components/markdown-editor/markdown-editor.component';
-import { ModalContentComponent } from './components/modal-content/modal-content.component';
+import { ModalContentComponent } from './modals/modal-content/modal-content.component';
 
-import { httpInterceptorProvider } from './http-interceptor';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { AppHttpInterceptor } from './classes/app-http-interceptor';
 
 @NgModule({
 	declarations: [
@@ -53,10 +54,14 @@ import { httpInterceptorProvider } from './http-interceptor';
 		CollapseModule.forRoot(),
 		BrowserAnimationsModule,
 		TabsModule.forRoot(),
-		ModalModule.forRoot()
+		ModalModule.forRoot(),
+		BsDropdownModule.forRoot()
 	],
-	providers: [ httpInterceptorProvider ],
-	bootstrap: [ AppComponent ]
+	providers: [ 
+		{ provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true }
+	 ],
+	bootstrap: [ AppComponent ],
+	entryComponents: [ ModalContentComponent ]
 })
 export class AppModule {
 	constructor(injector: Injector) {

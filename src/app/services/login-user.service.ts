@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { HttpClient } from '@angular/common/http';
 import { ApiUrl } from '../classes/common';
-import { HTTPStatus } from '../classes/httpstatus';
+import { HTTPStatus, HttpStatusCode } from '../classes/httpstatus';
 import { ErrorDisplayService } from './error-display.service';
 
 export interface LoginPostData {
@@ -33,12 +33,31 @@ export class LoginUserService {
 	 * Use the credentials to login the user.
 	 * @param creds The user crentials
 	 */
-	async login(creds: LoginPostData): Promise<void> {
-		
+	async login(creds: LoginPostData): Promise<boolean> {
+		try {
+			const rsp = await (this.http.post(`${ApiUrl}/login`, creds).toPromise()) as HTTPStatus
+			if (rsp.Status == HttpStatusCode.Ok) {
+				// Set the connected user.
+				this.usr = new User(rsp.Message.User);
+
+				// Add to the local storage the user token.
+				const t: any = rsp.Message.Token;
+				const tok = btoa(`${t.UserID}:${t.Token}`);
+				localStorage.setItem('tok', tok);
+
+				return true;
+			}
+			
+		} catch (err) { /* No-op */}
+
+		return false;
 	}
 
-	async loginFromToken() {
-		// TODO: Make a call to GET `/user` to get the current user.
+	async loginFromToken(): Promise<boolean> {
+		try {
+			// TODO: Make a call to GET `/user` to get the current user.
+		} catch(err) { /* No-op */ }
+		return false;
 	}
 
 	async logout() {
