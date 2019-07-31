@@ -3,21 +3,23 @@ export const body = `
     Input your user credentials to log into your account.
 </p>
 
-<div class="form-group">
-    <label for="username">Username</label>
-    <input id="username"
-            name="username"
-            class="form-control"
-            type="text" />
-</div>
+<form id="login">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input id="username"
+                name="username"
+                class="form-control"
+                type="text" />
+    </div>
 
-<div class="form-group">
-    <label for="password">Password</label>
-    <input id="password"
-            name="password"
-            class="form-control"
-            type="password" />
-</div>`;
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password"
+                name="password"
+                class="form-control"
+                type="password" />
+    </div>
+<form>`;
 
 export const alert = `
 <div class="alert alert-danger" role="alert">

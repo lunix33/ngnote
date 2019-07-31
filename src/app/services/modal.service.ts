@@ -17,21 +17,37 @@ export class ModalService {
 	 * Show a new modal.
 	 * @param config The configuration to be applied to the modal.
 	 */
-	public async show(config: ModalConfig): Promise<void> {
-		// Set global settings
-		if (!config.global)
-			config.global = {};
+	public async show(config: ModalConfig): Promise<string> {
+		return new Promise((resolve, reject) => {
+			// Set global settings
+			if (!config.global)
+				config.global = {};
 
-		// The configuration for the Bootstrap modal service.
-		const modalCfg: ModalOptions = {
-			keyboard: (config.global.escape != null) ?
-				config.global.escape : true,
-			ignoreBackdropClick: (config.global.backClick != null) ?
-				config.global.backClick : false,
-			initialState: { config }
-		}
+			// The configuration for the Bootstrap modal service.
+			const modalCfg: ModalOptions = {
+				keyboard: (config.global.escape != null) ?
+					config.global.escape : true,
+				ignoreBackdropClick: (config.global.backClick != null) ?
+					config.global.backClick : false,
+				initialState: { config }
+			}
 
-		this.bsModalSrv.show(ModalContentComponent, modalCfg);
+			let ref = null;
+
+			// Once the modal is displayed, run a user defined function if available.
+			this.bsModalSrv.onShown.subscribe(() => {
+				if (config.global.onShown)
+					config.global.onShown(ref)
+			});
+
+			// Resolve the modal with the close reason.
+			this.bsModalSrv.onHidden.subscribe((reason: string) => {
+				resolve(reason);
+			});
+
+			// Actually show the modal.
+			ref = this.bsModalSrv.show(ModalContentComponent, modalCfg);
+		});
 	}
 }
 
@@ -57,4 +73,5 @@ export interface ModalFooterControlConfig {
 export interface ModalGlobalConfig {
 	escape?: boolean
 	backClick?: boolean
+	onShown?: (r: BsModalRef)=>void
 }

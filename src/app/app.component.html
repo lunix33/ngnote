@@ -8,7 +8,8 @@
                     <button *ngIf="liUsrSrv.get == null; else loggedin"
                             type="button"
                             class="btn btn-primary"
-                            (click)="doLogin()">
+                            (click)="doLogin()"
+                            tooltip="Login">
                         <i class="fas fa-sign-in-alt"></i>
                     </button>
 
@@ -16,13 +17,25 @@
                         <div class="btn-group" dropdown>
                             <button dropdownToggle
                                     type="button"
-                                    class="btn btn-primary dropdown-toggle">
+                                    class="btn btn-primary dropdown-toggle"
+                                    tooltip="My account">
                                 <i class="fas fa-user"></i>
                             </button>
+
+                            <!-- Drop down options -->
                             <ul *dropdownMenu
                                     class="dropdown-menu">
-                                <li role="menuitem"><div class="dropdown-item">ssss</div></li>
+                                <li role="menuitem">
+                                    <button
+                                            type="button"
+                                            (click)="doLogout()"
+                                            class="dropdown-item">
+                                        Logout
+                                    </button>
+                                </li>
                             </ul>
+                            <!-- /Drop down options -->
+
                         </div>
                     </ng-template>
                 </div>

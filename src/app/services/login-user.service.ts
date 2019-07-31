@@ -70,16 +70,16 @@ export class LoginUserService {
 		return false;
 	}
 
-	async logout() {
+	async logout(): Promise<boolean> {
 		try {
 			const rst = await (this.http.get(`${ApiUrl}/logout`).toPromise()) as HTTPStatus
-		} catch (err) {
-			// this.errDispSrv.SomethingWentWrong(err);
-			// TODO: Ignore the error in the moment, I'll check how to handle that later...
-		}
-
-		// Remove the authentication token.
-		localStorage.removeItem("tok");
-		this.usr = undefined;
+			if (rst.Status === HttpStatusCode.Ok) {
+				// Remove the authentication token.
+				localStorage.removeItem("tok");
+				this.usr = undefined;
+				return true;
+			}
+		} catch (err) { /* No-op */ }
+		return false;
 	}
 }
