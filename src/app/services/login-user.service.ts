@@ -53,10 +53,20 @@ export class LoginUserService {
 		return false;
 	}
 
+	/**
+	 * Get the user's details.
+	 * @returns True if the login was successful, otherwise false.
+	 */
 	async loginFromToken(): Promise<boolean> {
-		try {
-			// TODO: Make a call to GET `/user` to get the current user.
-		} catch(err) { /* No-op */ }
+		if (localStorage.getItem("tok") != null) {
+			try {
+				const rsp = await (this.http.get(`${ApiUrl}/user`).toPromise()) as HTTPStatus
+				if (rsp.Status === HttpStatusCode.Ok) {
+					this.usr = new User(rsp.Message);
+					return true;
+				}
+			} catch(err) { /* No-op */ }
+		}
 		return false;
 	}
 
