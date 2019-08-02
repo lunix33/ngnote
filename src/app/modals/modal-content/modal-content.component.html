@@ -1,0 +1,27 @@
+<div *ngIf="config.header"
+		class="modal-header">
+	<div class="modal-title">
+		{{config.header.title}}
+	</div>
+	<button *ngIf="config.header.close"
+			type="button"
+			class="close pull-right"
+			aria-label="close"
+			(click)="ref.hide()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+
+<div class="modal-body"
+	[innerHTML]="body">
+</div>
+
+<div *ngIf="config.footer.length > 0"
+		class="modal-footer">
+	<button *ngFor="let c of config.footer"
+			type="button"
+			(click)="c.fn(ref)"
+			[ngClass]="c.klass">
+		{{c.text}}
+	</button>
+</div>
